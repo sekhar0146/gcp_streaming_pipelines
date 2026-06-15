@@ -1,0 +1,19 @@
+# Python environment and caches
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+env/
+venv/
+
+# Terraform local state and binaries
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# IDE configs and OS junk
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
