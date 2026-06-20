@@ -23,6 +23,31 @@ The infrastructure is fully managed as code and processes data through the follo
 
 ### 1. Provision Infrastructure
 Navigate to your Terraform folder and run:
-```bash
 terraform init
 terraform apply
+
+### 2. Deploy and Run the Streaming Pipeline
+python streaming/s9_dataflow_to_bq.py `
+  --runner=DataflowRunner `
+  --project=gcp-learnings-498010 `
+  --region=us-central1 `
+  --staging_location=gs://gcp-learnings-498010-dataflow/staging `
+  --temp_location=gs://gcp-learnings-498010-dataflow/temp `
+  --job_name=streaming-enrichment-pipeline-v4 `
+  --max_num_workers=1 `
+  --num_workers=1 `
+  --no_save_main_session
+
+### Deployment Flag Reference:
+--runner=DataflowRunner: Directs Apache Beam to run the pipeline as a managed cluster on GCP instead of locally.
+
+--project & --region: Specifies your target GCP environment resources.
+
+--staging_location & --temp_location: GCS paths where Dataflow stages the required binaries and worker packages.
+
+--max_num_workers=1 & --num_workers=1: Allocates exactly one worker to keep compute costs highly predictable.
+
+--no_save_main_session: Prevents worker start-up pickling crashes by skipping local main session serialization.
+
+### 3. Generate Mock Traffic:
+python publish_burst.py
